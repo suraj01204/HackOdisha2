@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>CampusXchange - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20250905030000">
+    <link rel="stylesheet" href="ui-enhancements.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="header__logo" onclick="window.location.href='index.html'" role="button" tabindex="0">
+                <div class="logo-container">
+                    <img src="assets/WhatsApp_Image_2025-09-07_at_03.19.07_597e3b01-removebg-preview.png" 
+                         alt="CampusXchange Logo" 
+                         class="logo-img">
+                    <span class="logo-text">CampusXchange</span>
+                </div>
+            </div>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="loginTab">Login</div>
+                <div class="auth-tab" id="signupTab">Sign Up</div>
+            </div>
+            
+            <div class="auth-form-container">
+                <!-- Login Form -->
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address *</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password *</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit">Login</button>
+                    </div>
+                </form>
+                
+                <!-- Signup Form -->
+                <form class="auth-form" id="signupForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="signupFullName">Full Name *</label>
+                        <input type="text" id="signupFullName" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address *</label>
+                        <input type="email" id="signupEmail" required placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPassword">Password *</label>
+                        <input type="password" id="signupPassword" required placeholder="Create a password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password *</label>
+                        <input type="password" id="signupConfirmPassword" required placeholder="Confirm your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupCollege">College/University *</label>
+                        <input type="text" id="signupCollege" required placeholder="Enter your college/university">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        document.getElementById('loginTab').addEventListener('click', function() {
+            document.getElementById('loginTab').classList.add('active');
+            document.getElementById('signupTab').classList.remove('active');
+            document.getElementById('loginForm').style.display = 'flex';
+            document.getElementById('signupForm').style.display = 'none';
+        });
+        
+        document.getElementById('signupTab').addEventListener('click', function() {
+            document.getElementById('signupTab').classList.add('active');
+            document.getElementById('loginTab').classList.remove('active');
+            document.getElementById('signupForm').style.display = 'flex';
+            document.getElementById('loginForm').style.display = 'none';
+        });
+        
+        // Simple helpers using sessionStorage only
+        function getUsers() {
+            try { return JSON.parse(sessionStorage.getItem('users') || '{}'); } catch (_) { return {}; }
+        }
+        function setUsers(users) {
+            sessionStorage.setItem('users', JSON.stringify(users));
+        }
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        function generateJWT(payload) {
+            const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+            const body = btoa(JSON.stringify(payload));
+            const signature = btoa("mock-signature-" + Date.now());
+            return `${header}.${body}.${signature}`;
+        }
+        function signInUser(user, rememberDays) {
+            const nowSec = Math.floor(Date.now() / 1000);
+            const tokenPayload = {
+                userId: Date.now(),
+                email: user.email,
+                name: user.name,
+                college: user.college || '',
+                iat: nowSec,
+                exp: nowSec + (rememberDays ? rememberDays * 24 * 60 * 60 : 24 * 60 * 60)
+            };
+            const token = generateJWT(tokenPayload);
+            sessionStorage.setItem('authToken', token);
+        }
+
+        // Login submit
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = (document.getElementById('loginEmail').value || '').trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value || '';
+            if (!isValidEmail(email)) { alert('Please enter a valid email'); return; }
+            if (password.length < 6) { alert('Password must be at least 6 characters'); return; }
+            const users = getUsers();
+            const user = users[email];
+            if (!user || user.password !== password) {
+                alert('Invalid email or password');
+                return;
+            }
+            signInUser(user, 1); // 1 day session
+            window.location.href = 'index.html';
+        });
+
+        // Signup submit
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = (document.getElementById('signupFullName').value || '').trim();
+            const email = (document.getElementById('signupEmail').value || '').trim().toLowerCase();
+            const password = document.getElementById('signupPassword').value || '';
+            const confirm = document.getElementById('signupConfirmPassword').value || '';
+            const college = (document.getElementById('signupCollege').value || '').trim();
+            if (name.length < 2) { alert('Name must be at least 2 characters'); return; }
+            if (!isValidEmail(email)) { alert('Please enter a valid email'); return; }
+            if (password.length < 6) { alert('Password must be at least 6 characters'); return; }
+            if (password !== confirm) { alert('Passwords do not match'); return; }
+            if (college.length < 2) { alert('College is required'); return; }
+            const users = getUsers();
+            if (users[email]) { alert('An account with this email already exists'); return; }
+            const newUser = { name, email, password, college };
+            users[email] = newUser;
+            setUsers(users);
+            signInUser(newUser, 1);
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
