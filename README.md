@@ -6,7 +6,7 @@
 <p align="center">
   Student Marketplace + Freelance Services  
   <br/>
-  Built for HackOdisha 2.0 🚀
+  Built for HackOdisha 5.0 🚀
 </p>
 
 
