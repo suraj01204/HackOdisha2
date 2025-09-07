@@ -51,29 +51,29 @@ Built for **HackOdisha 5.0** 🚀
 ---
 
 ## 📂 Project Structure  
-
-CampusXchange/
-│
-├── Frontend/ (HackOdisha2)
-│ ├── index.html # Landing page
-│ ├── login.html # Authentication UI
-│ ├── style.css # Core styling
-│ ├── ui-enhancements.css # Extra styles
-│ ├── app.js # Frontend logic (API + socket.io)
-│ └── assets/ # Images & static files
-│
-├── Backend/ (HackOdisha)
-│ ├── server.js # Entry point
-│ ├── routes/ # API routes (items, services, users)
-│ ├── models/ # MongoDB schemas
-│ ├── controllers/ # Business logic
-│ ├── sockets/ # Socket.IO events (chat, notifications)
-│ └── config/ # DB & env config
-│
-└── README.md # Documentation
-
----
-
+```yaml
+CampusXchange:
+  Frontend:
+    path: HackOdisha2
+    files:
+      - index.html: "Landing page"
+      - login.html: "Authentication UI"
+      - style.css: "Core styling"
+      - ui-enhancements.css: "Extra styles"
+      - app.js: "Frontend logic (API + socket.io)"
+    assets: "Images & static files"
+  Backend:
+    path: HackOdisha
+    files:
+      - server.js: "Entry point"
+    directories:
+      - routes: "API routes (items, services, users)"
+      - models: "MongoDB schemas"
+      - controllers: "Business logic"
+      - sockets: "Socket.IO events (chat, notifications)"
+      - config: "DB & env config"
+  README.md: "Documentation"
+```
 
 ---
 
