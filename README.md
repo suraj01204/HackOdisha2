@@ -94,22 +94,22 @@ cd HackOdisha
 ---
 
 ## 2️⃣ Run the Backend
-cd HackOdisha
-npm install
-npm start
+- cd HackOdisha
+- npm install
+- npm start
 
 
-Server runs on: http://localhost:X000
-API base: http://localhost:X000/api
-Socket.IO: ws://localhost:X000
+- Server runs on: http://localhost:X000
+- API base: http://localhost:X000/api
+- Socket.IO: ws://localhost:X000
 
 ---
 
 ## 👨‍💻 Meet the Team  
 
-- **Biswajit Das**  
+- [**Biswajit Das**](https://github.com/Biswajit8895) 
 - [**Suraj Kumar Sahu**](https://github.com/suraj01204)  
-- **Smruti Ranjan Jena**  
+- [**Smruti Ranjan Jena**](https://github.com/SRJ-smrutiranjan)
 - [**Gourav Kumar Jaiswal**](https://github.com/gouravKJ)  
 - [**Shree Swagat Srinivash Majhi**](https://github.com/Swagat-1655)
 
